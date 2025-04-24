@@ -4,13 +4,14 @@ version: '3.8'
 services:
   ###> database service ###
   database:
-    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    image: mysql:5.7   # Use a MySQL image (instead of PostgreSQL)
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-!ChangeMe!}
+      MYSQL_DATABASE: ${POSTGRES_DB:-app}
+      MYSQL_USER: ${POSTGRES_USER:-app}
+      MYSQL_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
+      - database_data:/var/lib/mysql:rw  
   ###< database service ###
 
   ###> web app (Symfony) service ###
@@ -24,7 +25,7 @@ services:
       - .:/app    # Mount the current directory into /app inside the container
     environment:
       APP_ENV: dev   # Set to 'prod' for production environment
-      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}"
+      DATABASE_URL: "mysql://root:YQaPscHnJEWuDzxQcxldyWImjqjVJoxA@metro.proxy.rlwy.net:16555/railway?serverVersion=5.7&charset=utf8mb4"
     depends_on:
       - database   # Ensure that the database starts before Symfony app
     command: "php -S 0.0.0.0:9000 -t public"   # Run Symfony on port 9000
