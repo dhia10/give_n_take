@@ -6,7 +6,8 @@ services:
       - "9000:9000"
     depends_on:
     - database
-  command: php -S 0.0.0.0:${PORT} public/index.php
+  command: php -S 0.0.0.0:${PORT} -t public
+
 ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
