@@ -1,23 +1,24 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
-    annotations: false  # Disable annotations if not using them
-    http_method_override: false  # Allow method overriding (useful for REST APIs)
-    handle_all_throwables: true  # Handle all errors (you may want to change this in production)
+    annotations: false
+    http_method_override: false
+    handle_all_throwables: true
 
-    # Session configuration
+    # Enables session support. Note that the session will ONLY be started if you read or write from it.
+    # Remove or comment this section to explicitly disable session support.
     session:
-        handler_id: null  # Default handler (file-based session storage)
-        cookie_secure: auto  # Secure cookies over HTTPS only (ensure you're using HTTPS in production)
-        cookie_samesite: lax  # Control cookie behavior with SameSite attribute
+        handler_id: null
+        cookie_secure: auto
+        cookie_samesite: lax
 
-    # Log PHP errors
+    #esi: true
+    #fragments: true
     php_errors:
         log: true
 
-    # Environment-specific settings for testing
-    when@test:
-        framework:
-            test: true  # Enable test-specific configuration
-            session:
-                storage_factory_id: session.storage.factory.mock_file  # Use mock session in tests
+when@test:
+    framework:
+        test: true
+        session:
+            storage_factory_id: session.storage.factory.mock_file
