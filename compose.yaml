@@ -4,6 +4,9 @@ services:
     build: .
     ports:
       - "9000:9000"
+    depends_on:
+    - database
+  command: php -S 0.0.0.0:${PORT} public/index.php
 ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
@@ -17,9 +20,7 @@ services:
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###
-    depends_on:
-    - database
-  command: php -S 0.0.0.0:${PORT} public/index.php
+    
 
 volumes:
 ###> doctrine/doctrine-bundle ###
