@@ -1,21 +1,34 @@
 
-services:
+version: '3.8'
 
-###> doctrine/doctrine-bundle ###
+services:
+  ###> database service ###
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
       POSTGRES_USER: ${POSTGRES_USER:-app}
     volumes:
       - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+  ###< database service ###
+
+  ###> web app (Symfony) service ###
+  symfony:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"   # Exposing port 9000 to the host
+    volumes:
+      - .:/app    # Mount the current directory into /app inside the container
+    environment:
+      APP_ENV: dev   # Set to 'prod' for production environment
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}"
+    depends_on:
+      - database   # Ensure that the database starts before Symfony app
+    command: "php -S 0.0.0.0:9000 -t public"   # Run Symfony on port 9000
+  ###< web app (Symfony) service ###
 
 volumes:
-###> doctrine/doctrine-bundle ###
   database_data:
-###< doctrine/doctrine-bundle ###
