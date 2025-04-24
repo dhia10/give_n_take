@@ -24,12 +24,12 @@ services:
     volumes:
       - .:/app    # Mount the current directory into /app inside the container
     environment:
-      APP_ENV: dev   # Set to 'prod' for production environment
+      APP_ENV: dev
       DATABASE_URL: "mysql://root:YQaPscHnJEWuDzxQcxldyWImjqjVJoxA@metro.proxy.rlwy.net:16555/railway?serverVersion=5.7&charset=utf8mb4"
     depends_on:
       - database   # Ensure that the database starts before Symfony app
     command: "php -S 0.0.0.0:9000 -t public"   # Run Symfony on port 9000
-  ###< web app (Symfony) service ###
+
 
 volumes:
   database_data:
