@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Product{% endblock %}
+
+{% block body %}
+    <div class="container-fluid" style="background-image: url('{{ asset('login.jpg') }}'); background-size: cover; height: 100vh;">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-md-6 bg-light p-5 rounded shadow position-relative">
+                <h1 class="text-center mb-4">Create New Product</h1>
+
+                <!-- Product Icon Floating -->
+                <a href="{{ path('app_product_index2') }}" style="position: absolute; top: 10px; left: 15px;">
+                    <i class="fas fa-box fa-3x" style="color: #007bff;"></i>
+                </a>
+                {{ form_start(form, {'attr': {'enctype': 'multipart/form-data','data-turbo': 'false'}}) }}
+                <div class="mb-3">
+                    {{ form_label(form.name) }}
+                    {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Product Name'}}) }}
+                    {{ form_errors(form.name) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.description) }}
+                    {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Product Description'}}) }}
+                    {{ form_errors(form.description) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.silverprice) }}
+                    {{ form_widget(form.silverprice, {'attr': {'class': 'form-control', 'placeholder': 'Price in Silver'}}) }}
+                    {{ form_errors(form.silverprice) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.goldprice) }}
+                    {{ form_widget(form.goldprice, {'attr': {'class': 'form-control', 'placeholder': 'Price in Gold'}}) }}
+                    {{ form_errors(form.goldprice) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.image, 'Product Image') }}
+                    {{ form_widget(form.image, {'attr': {'class': 'form-control', 'accept': 'image/*'}}) }}
+                    <div id="imagePreview" class="mt-2" style="display:none;">
+                        <img id="previewImage" src="" alt="Image Preview" style="max-width: 100%; height: auto;" />
+                    </div>
+                    {{ form_errors(form.image) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.createdat) }}
+                    {{ form_widget(form.createdat, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.createdat) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.isavailable) }}
+                    {{ form_widget(form.isavailable, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_errors(form.isavailable) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.listedBy) }}
+                    {{ form_widget(form.listedBy, {'attr': {'class': 'form-select'}}) }}
+                    {{ form_errors(form.listedBy) }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+                {{ form_end(form) }}
+
+                <a href="{{ path('app_product_index') }}" class="btn btn-secondary mt-3">Back to List</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add image preview functionality
+        const imageInput = document.getElementById('imageUpload');
+        imageInput.addEventListener('change', function(event) {
+            const file   = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImage').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+{% endblock %}

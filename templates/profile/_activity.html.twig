@@ -1,0 +1,13 @@
+{# templates/profile/_activity.html.twig #}
+{% if transactions|length == 0 %}
+    <p class="text-white font-weight-bold">No recent transactions.</p>
+{% else %}
+    <ul class="list-group">
+        {% for transaction in transactions %}
+            <li class="list-group-item d-flex justify-content-between">
+                <span>🛒 Bought: {{ transaction.product.name }}</span>
+                <span>{{ transaction.createdAt|date('Y-m-d H:i') }}</span> {# Format the date as needed #}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

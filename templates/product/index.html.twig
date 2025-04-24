@@ -1,0 +1,334 @@
+{# templates/product/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Shop Homepage{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('bootstrap-icons/font/bootstrap-icons.css') }}" rel="stylesheet" />
+    <style>
+        body {
+            background: #f9fafb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header.bg-dark.py-5 {
+            padding-top: 3rem !important;
+            padding-bottom: 3rem !important;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .product-card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.25rem 0.625rem rgb(0 0 0 / 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow 0.3s ease;
+            position: relative;
+        }
+        .product-card:hover {
+            box-shadow: 0 0.5rem 1.875rem rgb(0 0 0 / 0.18);
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid #dee2e6;
+            background-color: #f0f0f0;
+        }
+        .badge-sale {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #212529;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25em 0.5em;
+            border-radius: 0.25rem;
+            z-index: 10;
+        }
+        .product-content {
+            flex-grow: 1;
+            padding: 1.25rem 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #212529;
+            line-height: 1.2;
+        }
+        .product-description {
+            flex-grow: 1;
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .product-listedby {
+            font-size: 0.85rem;
+            color: #adb5bd;
+            margin-bottom: 1rem;
+        }
+        .product-prices {
+            margin-top: auto;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #212529;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .price-silver {
+            color: #6c757d;
+        }
+        .price-gold {
+            color: #ffc107;
+        }
+        .price-muted {
+            color: #6c757d;
+            text-decoration: line-through;
+            margin-right: 0.5rem;
+        }
+        .product-actions {
+            border-top: 1px solid #dee2e6;
+            padding: 1rem 1.5rem;
+            background-color: transparent;
+            text-align: center;
+        }
+        .btn-details {
+            color: #212529;
+            border: 1px solid #212529;
+            font-weight: 600;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.375rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .btn-details:hover, .btn-details:focus {
+            color: white;
+            background-color: #212529;
+            border-color: #212529;
+            text-decoration: none;
+        }
+        /* Star ratings */
+        .product-rating {
+            display: flex;
+            justify-content: center;
+            color: #ffc107;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="bi bi-shop fs-3 me-2" aria-hidden="true"></i>
+                <span>Give_n_Take</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarProfileDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false" aria-label="User profile menu">
+                            <i class="bi bi-person-circle fs-5 me-1" aria-hidden="true"></i>
+                            {{ app.user.username ?: 'Profile' }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarProfileDropdown">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ path('app_profile') }}">
+                                    <i class="bi bi-person fs-5 me-2" aria-hidden="true"></i> My Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">
+                                    <i class="bi bi-box-arrow-right fs-5 me-2" aria-hidden="true"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+    
+                <form class="d-flex me-3" role="search" aria-label="Search form" method="GET" action="{{ path('app_product_index') }}">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search products" aria-label="Search products" />
+                    <button class="btn btn-outline-dark" type="submit" aria-label="Search button">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+    
+                <form class="d-flex" role="search" aria-label="Cart" method="GET" action="#">
+                    <button class="btn btn-outline-dark d-flex align-items-center" type="submit" aria-label="View Cart">
+                        <i class="bi bi-cart-fill me-1 fs-5" aria-hidden="true"></i>
+                        Cart
+                        <span class="badge bg-dark text-white ms-2 rounded-pill" style="min-width: 1.5rem; text-align: center;">0</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Give_n_Take</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Trade your items with us</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Product Section -->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5" role="main" aria-label="Product Listing">
+            {% if products is empty %}
+                <p class="text-center text-muted fs-5">No products found.</p>
+            {% else %}
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    {% for product in products %}
+                        <div class="col mb-5">
+                            <div class="card h-100 position-relative">
+
+                                {# Show Sale badge if goldprice < silverprice (example logic) #}
+                                {% set onSale = product.goldprice is not null and product.silverprice is not null and product.goldprice < product.silverprice %}
+                                {% if onSale %}
+                                    <div class="badge-sale">Sale</div>
+                                {% endif %}
+
+                                {# Product image #}
+                                {% if product.image %}
+                                    <img class="card-img-top" src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}" loading="lazy" />
+                                {% else %}
+                                    <img class="card-img-top" src="{{ asset('images/placeholder.png') }}" alt="No image available" loading="lazy" />
+                                {% endif %}
+
+                                <div class="card-body p-4">
+                                    <div class="text-center">
+                                        <h5 class="fw-bolder">{{ product.name }}</h5>
+
+                                        {% if onSale %}
+                                        <div class="product-rating" aria-label="5 star rating">
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                        </div>
+                                    {% endif %}
+
+{# Prices with better visual representation for silver and gold #}
+{% if onSale %}
+    <span class="price-muted">
+        <i class="bi bi-cash-coin" style="color: gray;" title="Silver"></i> {{ product.silverprice }}
+    </span>
+    <span>
+        <i class="bi bi-cash-coin" style="color: gold;" title="Gold"></i> {{ product.goldprice }}
+    </span>
+{% else %}
+    {% if product.silverprice and product.goldprice %}
+        <span>
+            <i class="bi bi-cash-coin" style="color: gray;" title="Silver"></i> {{ product.silverprice }} - 
+            <i class="bi bi-cash-coin" style="color: gold;" title="Gold"></i> {{ product.goldprice }}
+        </span>
+    {% elseif product.silverprice %}
+        <span>
+            <i class="bi bi-cash-coin" style="color: gray;" title="Silver"></i> {{ product.silverprice }}
+        </span>
+    {% elseif product.goldprice %}
+        <span>
+            <i class="bi bi-cash-coin" style="color: gold;" title="Gold"></i> {{ product.goldprice }}
+        </span>
+    {% else %}
+    <span class="text-danger fw-bold">SOLD</span>
+
+    {% endif %}
+{% endif %}
+                                    </div>
+                                    <p class="product-listedby mt-2 text-center text-muted small">
+                                        Listed by: <strong>#{{ product.listedBy.id }}</strong>
+                                    </p>
+                                </div>
+                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent text-center">
+                                    {%  if product.silverprice or product.goldprice %}
+    <button type="button" class="btn btn-outline-dark mt-auto" data-bs-toggle="modal" data-bs-target="#purchaseModal{{ product.id }}">
+        Buy
+    </button>
+{% else %}
+    <span class="text-danger fw-bold">SOLD</span>
+{% endif %}
+                                </div>
+                            </div>
+                            <div class="modal fade" id="purchaseModal{{ product.id }}" tabindex="-1" aria-labelledby="purchaseModalLabel{{ product.id }}" aria-hidden="true">                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="purchaseModalLabel">Purchase {{ product.name }}</h5>
+                                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Price: <span class="text-muted">{{ product.silverprice }} silver and {{ product.goldprice }} gold</span></p>
+                                            <form id="transactionForm" method="POST" action="{{ path('app_transaction_new') }}">
+                                                <div class="mb-3">
+                                                    <label for="silverInput" class="form-label">Silver Amount:</label>
+                                                    <input type="number" class="form-control" id="silverInput" name="silver" min="0" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="goldInput" class="form-label">Gold Amount:</label>
+                                                    <input type="number" class="form-control" id="goldInput" name="gold" min="0" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="phoneInput" class="form-label">Phone Number:</label>
+                                                    <input type="text" class="form-control" id="phoneInput" name="phone" />
+                                                </div>
+                                                <input type="hidden" name="product_id" value="{{ product.id }}" />
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="submit" form="transactionForm" class="btn btn-primary">Confirm Purchase</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+    </section>
+
+ 
+   
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+{% endblock %}
