@@ -1,35 +1,24 @@
 
-version: '3.8'
-
 services:
-  ###> database service ###
-  database:
-    image: mysql:5.7   # Use a MySQL image (instead of PostgreSQL)
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-!ChangeMe!}
-      MYSQL_DATABASE: ${POSTGRES_DB:-app}
-      MYSQL_USER: ${POSTGRES_USER:-app}
-      MYSQL_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-    volumes:
-      - database_data:/var/lib/mysql:rw  
-  ###< database service ###
-
-  ###> web app (Symfony) service ###
-  symfony:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  app:
+    build: .
     ports:
-      - "9000:9000"   # Exposing port 9000 to the host
-    volumes:
-      - .:/app    # Mount the current directory into /app inside the container
+      - "9000:9000"
+###> doctrine/doctrine-bundle ###
+  database:
+    image: postgres:${POSTGRES_VERSION:-16}-alpine
     environment:
-      APP_ENV: dev
-      DATABASE_URL: "mysql://root:YQaPscHnJEWuDzxQcxldyWImjqjVJoxA@metro.proxy.rlwy.net:16555/railway?serverVersion=5.7&charset=utf8mb4"
-    depends_on:
-      - database   # Ensure that the database starts before Symfony app
-    command: "php -S 0.0.0.0:9000 -t public"   # Run Symfony on port 9000
-
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      # You should definitely change the password in production
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+    volumes:
+      - database_data:/var/lib/postgresql/data:rw
+      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./docker/db/data:/var/lib/postgresql/data:rw
+###< doctrine/doctrine-bundle ###
 
 volumes:
+###> doctrine/doctrine-bundle ###
   database_data:
+###< doctrine/doctrine-bundle ###
