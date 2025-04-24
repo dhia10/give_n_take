@@ -22,5 +22,5 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash \
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Expose the correct port and run the built-in server
-EXPOSE 9000
+EXPOSE 8080
 CMD php -S 0.0.0.0:${PORT:-9000} -t public
