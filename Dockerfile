@@ -23,4 +23,4 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Expose the correct port and run the built-in server
 EXPOSE 8080
-CMD php -S 0.0.0.0:${PORT:-8080} -t public
+CMD php -S 0.0.0.0:${PORT:-9000} -t public
