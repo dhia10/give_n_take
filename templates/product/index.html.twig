@@ -198,7 +198,7 @@
     <header class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <img src="{{ asset('charika.png') }}" alt="Echarika Logo" class="img-fluid" style="max-width: 200px;"/>
+                <img src="{{ asset('charika.jpeg') }}" alt="Echarika Logo" class="img-fluid" style="max-width: 200px;"/>
                 <h1 class="display-4 fw-bolder">Echarika</h1>
                 <p class="lead fw-normal text-white-50 mb-0">Trade your items with us</p>
             </div>
@@ -224,7 +224,7 @@
 
                                 {# Product image #}
                                 {% if product.image %}
-                                    <img class="card-img-top" src="{{ asset('build/uploads/' ~ product.image) }}" alt="{{ product.name }}" loading="lazy" />
+                                    <img class="card-img-top" src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}" loading="lazy" />
                                 {% else %}
                                     <img class="card-img-top" src="{{ asset('images/placeholder.png') }}" alt="No image available" loading="lazy" />
                                 {% endif %}
