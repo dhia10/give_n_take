@@ -84,7 +84,11 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "build": "encore production",
+        "postinstall": "npm run build"
     },
     "conflict": {
         "symfony/symfony": "*"
