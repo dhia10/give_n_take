@@ -5,8 +5,8 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('bootstrap-icons/font/bootstrap-icons.css') }}" rel="stylesheet" />
+    <link href="{{ asset('build/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('build/bootstrap-icons/font/bootstrap-icons.css') }}" rel="stylesheet" />
     <style>
         body {
             background: #f9fafb;
@@ -198,7 +198,7 @@
     <header class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <img src="{{ asset('images/logo.png') }}" alt="Echarika Logo" class="img-fluid" style="max-width: 200px;"/>
+                <img src="{{ asset('logo.png') }}" alt="Echarika Logo" class="img-fluid" style="max-width: 200px;"/>
                 <h1 class="display-4 fw-bolder">Echarika</h1>
                 <p class="lead fw-normal text-white-50 mb-0">Trade your items with us</p>
             </div>
@@ -331,5 +331,5 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('build/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 {% endblock %}
