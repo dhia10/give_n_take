@@ -10,17 +10,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/product')]
 final class ProductController extends AbstractController
 {
     #[Route(name: 'app_product_index', methods: ['GET'])]
-    public function index(ProductRepository $productRepository): Response
-    {
-        return $this->render('product/index.html.twig', [
-            'products' => $productRepository->findAll(),
-        ]);
-    }
+    public function index(Request $request, ProductRepository $productRepository, PaginatorInterface $paginator): Response
+{
+    $query = $productRepository->createQueryBuilder('p')
+        ->getQuery();
+
+    $pagination = $paginator->paginate(
+        $query,
+        $request->query->getInt('page', 1), // current page number
+        10 // items per page
+    );
+
+    return $this->render('product/index.html.twig', [
+        'pagination' => $pagination,
+    ]);
+}
     #[Route('/ADMIN', name: 'app_product_index2', methods: ['GET'])]
 public function index2(ProductRepository $productRepository): Response
 {
