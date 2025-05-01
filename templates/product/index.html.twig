@@ -321,9 +321,10 @@
                 </div>
             {% endif %}
         </div>
-        <div class="navigation">
-            {{ knp_pagination_render(pagination) }}
-        </div>  
+        <div class="navigation d-flex justify-content-center my-4">
+            {{ knp_pagination_render(pagination, 'pagination/bootstrap_v5_pagination.html.twig') }}
+        </div>
+         
     </section>
 
  
