@@ -321,9 +321,31 @@
                 </div>
             {% endif %}
         </div>
-        <div class="navigation d-flex justify-content-center my-4">
-            {{ knp_pagination_render(pagination, 'pagination/bootstrap_v5_pagination.html.twig') }}
-        </div>
+        <ul class="pagination pagination-lg">
+            {% if pagination.currentPage > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path(app.request.attributes.get('_route'), pagination.query|merge({'page': pagination.currentPage - 1})) }}">
+                        &laquo; Prev
+                    </a>
+                </li>
+            {% endif %}
+        
+            {% for page in pagination.paginationData.pagesInRange %}
+                <li class="page-item {{ page == pagination.currentPage ? 'active' : '' }}">
+                    <a class="page-link" href="{{ path(app.request.attributes.get('_route'), pagination.query|merge({'page': page})) }}">
+                        {{ page }}
+                    </a>
+                </li>
+            {% endfor %}
+        
+            {% if pagination.currentPage < pagination.pageCount %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path(app.request.attributes.get('_route'), pagination.query|merge({'page': pagination.currentPage + 1})) }}">
+                        Next &raquo;
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
          
     </section>
 
