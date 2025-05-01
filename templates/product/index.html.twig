@@ -212,7 +212,7 @@
                 <p class="text-center text-muted fs-5">No products found.</p>
             {% else %}
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    {% for product in products %}
+                    {% for product in pagination %}
                         <div class="col mb-5">
                             <div class="card h-100 position-relative">
 
@@ -292,7 +292,7 @@
                                             <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <p>Price: <span class="text-muted">{{ product.silverprice }} silver and {{ product.goldprice }} gold</span></p>
+                                            <p>Price: <span class="text-muted">{{ product.silverprice }} silver or {{ product.goldprice }} gold</span></p>
                                             <form id="transactionForm" method="POST" action="{{ path('app_transaction_new') }}">
                                                 <div class="mb-3">
                                                     <label for="silverInput" class="form-label">Silver Amount:</label>
@@ -321,7 +321,9 @@
                 </div>
             {% endif %}
         </div>
-        
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>  
     </section>
 
  
