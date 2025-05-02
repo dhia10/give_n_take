@@ -223,11 +223,12 @@
                                 {% endif %}
 
                                 {# Product image #}
-                                {% if product.image %}
-                                    <img class="card-img-top" src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}" loading="lazy" />
-                                {% else %}
-                                    <img class="card-img-top" src="{{ asset('images/placeholder.png') }}" alt="No image available" loading="lazy" />
-                                {% endif %}
+                                {% if product.image is not empty %}
+                                <img class="card-img-top" src="{{ product.image }}" alt="{{ product.name }}" loading="lazy" />
+                            {% else %}
+                                <img class="card-img-top" src="{{ asset('images/placeholder.png') }}" alt="No image available" loading="lazy" />
+                            {% endif %}
+                            
 
                                 <div class="card-body p-4">
                                     <div class="text-center">

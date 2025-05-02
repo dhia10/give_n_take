@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Cloudinary\Cloudinary;
 
 #[Route('/product')]
 final class ProductController extends AbstractController
@@ -51,9 +52,12 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
         $file = $request->files->get('product')['image'] ?? null;
 
         if ($file) {
-            $fileName = uniqid() . '.' . $file->guessExtension();
-            $file->move($this->getParameter('uploads_directory'), $fileName);
-            $product->setImage($fileName);
+            $cloudinary = new Cloudinary($_ENV['CLOUDINARY_URL']);
+            $uploadedFilePath = $file->getPathname();
+            $result = $cloudinary->uploadApi()->upload($uploadedFilePath);
+            
+            $cloudinaryUrl = $result['secure_url'];
+            $product->setImage($cloudinaryUrl); // Save the URL instead of filename
         }
 
         $entityManager->persist($product);
