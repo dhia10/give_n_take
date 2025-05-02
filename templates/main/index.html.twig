@@ -15,7 +15,7 @@
             background-color: #f4f4f4;
         }
         .hero {
-            background: url('your-hero-image-url.jpg') no-repeat center center/cover;
+            background: url('{{ asset('tradeandfun.png') }}') no-repeat center center/cover; /* Using asset function */
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -24,7 +24,9 @@
             text-align: center;
             padding: 20px;
             border-bottom: 6px solid #007BFF;
+            position: relative;
         }
+
         .hero h1 {
             font-size: 4rem;
             margin-bottom: 20px;
